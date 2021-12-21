@@ -1,8 +1,16 @@
 import pandas as pd
 import numpy as np
 
-class DemographicDF(object):
+class CleanDF(object):
+	def __init__(self):
+		self.df = pd.DataFrame()
+	# def join(self, other):
+	# 	self.df = self.df.join(other.df.set_index('SEQN'), on='SEQN')
+	
+	def left_merge(self, other, on='SEQN'):
+		self.df = self.df.merge(other.df, how='left', on=on)
 
+class DemographicDF(CleanDF):
 	def __init__(self):
 		self.df = pd.read_csv('../data/demographic.csv')[['SEQN','RIAGENDR','RIDAGEYR','RIDRETH3',
 															'DMQMILIZ','DMQADFC','DMDBORN4','DMDMARTL']]
@@ -32,6 +40,21 @@ class DemographicDF(object):
 			if column in self.column_dict:
 				self.df[column] = self.df[column].apply(lambda x: make_readable(self,column,x))
 
+class ExamDF(CleanDF):
+	def __init__(self):
+		super(ExamDF,self).__init__()
+		self.df = pd.read_csv('../data/examination.csv')[['SEQN','BPXSY1','BPXSY2','BPXSY3','BPXSY4','BPXDI1','BPXDI2','BPXDI3','BPXDI4']]
+		self.create_average_bp_columns()
+	
+	def create_average_bp_columns(self):
+		self.df['AVG SYS BP'] = self.df[['BPXSY1','BPXSY2','BPXSY3','BPXSY4']].mean(axis=1)
+		self.df['AVG DIAS BP'] = self.df[['BPXDI1','BPXDI2','BPXDI3','BPXDI4']].mean(axis=1)
+
+class LabsDF(CleanDF):
+	def __init__(self):
+		super(LabsDF,self).__init__()
+		self.df = pd.read_csv('../data/labs.csv')[['SEQN','LBXHCT','LBXTC']]
+
 if __name__ == '__main__':
 	demo_df = DemographicDF()
-	demo_df.df.head(10)
+	exam_df = ExamDF()
