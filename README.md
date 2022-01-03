@@ -21,26 +21,39 @@ The data I used for this project comes from the <a href="https://www.kaggle.com/
 	<li>"medications": 13 columns, 20195 rows</li>
 	<li>"questionnaire": 953 columns, 10176 rows</li>
 </ul>
-Obviously, I couldn't include every column in my analysis, so I decided to focus on participants' ages, genders, blood pressure, and a few of their questionnaire answers dealing with blood pressure. This resulted in the data below:
+Obviously, I couldn't include every column in my analysis, so I decided to focus on participants' ages, blood pressure, marital status, and the amount of nicotine found during their labs. This resulted in the data below:
 <br></br>
 ## Include screenshot
 <br></br>
 
 ## <u>Summary of the Data:</u>
-1000 Rows, each containing the following information for one unique movie:
+10175 Rows, each containing the following information for unique patients:
 <ul>
-	<li>Rank: Ranking of Movie based on Opening Weekend Revenue (Numerical)</li>
+	<li>SEQN: the Participant's Unique Sequence Number</li>
+	<li>RIDAGEYR: Age</li>
+	<li>DMQMILIZ: Did the participant serve active duty in US Armed Forces?</li>
+	<li>DMDMARTL: Marital Status</li>
+	<li>AVG_SYS_BP: Average Systolic Blood Pressure</li>
+	<li>AVG_DIAS_BP: Average Diastolic Blood Pressure</li>
+	<li>High_SYS_BP: Does the participant have a High Average Systolic Blood Pressure (>= 130 mmHg)</li>
+	<li>High_DIAS_BP: Does the participant have a High Average Diastolic Blood Pressure (>= 80 mmHg)</li>
+	<li>LBXHCT: Nicotine Metabolate Levels Detected (Hydroxycotinine, Serum (ng/mL))</li>
+
 </ul>
 
 ## <u>Cleaning:</u>
 <ul>
 	<li>I first selected the columns that I wanted to focus on and removed the rest.</li>
 	<li>Initially, all categorical column entries were recorded as integers representing participant responses. I found a website that had a legend that explained each number, then I replaced all the numbers with more readable text.</li>
+	<li>I created the AVG_SYS_BP and AVG_DIAS_BP columns by taking the average of the four blood pressure readings for each patient.</li>
+	<li>I then created the High_SYS_BP and High_DIAS_BP columns by comparing each average blood pressure with the threshold for high blood pressure (Systolic >= 130 mmHg; Diastolic >= 80 mmHg). I had to convert these columns to integers because the Logistic Regression function couldn't interpret Boolean values.</li>
+	<li>I created a CleanDF class that creates a cleaned dataframe containing all of the features listed above.</li>
+	<li>While NaN values are ignored by the plotting libraries that I used, I had to drop rows containing NaN values when creating my logistic regression models.</li>
 </ul>
 
 # Visualization
 ## Part 1:
-
+I first made a scatterplot of AVG_SYS_BP vs Nicotine to quickly visualize the distribution of my data.
 
 # Conclusions
 
