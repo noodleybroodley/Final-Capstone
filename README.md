@@ -51,9 +51,38 @@ Obviously, I couldn't include every column in my analysis, so I decided to focus
 	<li>While NaN values are ignored by the plotting libraries that I used, I had to drop rows containing NaN values when creating my logistic regression models.</li>
 </ul>
 
-# Visualization
-## Part 1:
-I first made a scatterplot of AVG_SYS_BP vs Nicotine to quickly visualize the distribution of my data.
+# Part 1: Visualization
+<p>I first made a scatterplot of Average Systolic Blood Pressure vs Nicotine to quickly visualize my data.<p>
+
+* ADD INITIAL SCATTERPLOT
+<p>The relationship between Blood Pressure and Nicotine does not appear to be linear, so a linear regression would not be appropriate for modeling this relationship.</p>
+<p>I also wanted to see how blood pressure varied between different demographics of people. Below are Box and Whisker plots showing the distribution of blood pressure readings for people of different marital statuses:</p>
+
+* ADD MARITAL STATUS BOX N WHISKER
+<p>...and another comparing blood pressure readings of people who served in the active duty military and those that didn't:</p>
+
+* ADD MILITARY BOX N WHISKER
+<p>It is interesting to note that widowers seem to have a higher mean blood pressure than people of other marital statuses, while people living with a partner seem to have the lowest mean blood pressure. People who have served in the also seem to have higher mean blood pressure than people who haven't.</p>
+
+# Part 2: Creating a Model
+<p>As previously noted, the relationship between Blood Pressure and Nicotine cannot be represented linearly, so it would be more appropriate to view this as a binary classification problem: "What are the odds that a participant has high blood pressure, based on the amount of nicotine detected during their labs? I chose to create an inferential logistic regression!</p>
+<p>To accomplish this, I created a new column in my data containing a "1" if the participant had high systolic blood pressure on average and a "0" if they did not (scatterplot below).</p>
+
+* ADD SCATTERPLOT
+<p>I then created my initial logistic regression model</p>
+
+* add model plot
+
+# Part 3: Improving the Model
+<p>As you can see, our regression line doesn't exactly fit the data. In this case, it is necessary to choose a probability threshold for classifying a data point as having high blood pressure. I initially chose 0.15.</p>
+
+<p>evaluated its performance using a Receiver Operating Characteristic (ROC) curve:</p>
+
+* add model plot with 0.15 threshold line
+* add roc curve
+<p>In my model, I want to minimize the false positive rate and maximize the true positive rate. In other words, I want my model to correctly categorize a person's blood pressure as much as possible. I used the area under the ROC curve to determine if my model is successful at this. On this plot, an area of 0.5 represents a 50% probability that a model will correctly categorize data, equivalent to random guessing or a coin-flip. The closer to an area of 1.0, the better the model.</p>
+
+
 
 # Conclusions
 
