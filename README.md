@@ -20,7 +20,7 @@ The data I used for this project comes from the <a href="https://www.kaggle.com/
 
 Obviously, I couldn't include every column in my analysis, so I decided to focus on participants' ages, blood pressure, marital status, and the amount of nicotine found during their labs. This resulted in the data below:
 
-* SCREENSHOT OF DATA
+<img src='img/data.png'>
 
 ### <u>Summary of the Data:</u>
 10175 Rows, each containing the following information for unique patients:
@@ -44,20 +44,20 @@ Obviously, I couldn't include every column in my analysis, so I decided to focus
 	<li>I created the AVG_SYS_BP and AVG_DIAS_BP columns by taking the average of the four blood pressure readings for each patient.</li>
 	<li>I then created the High_SYS_BP and High_DIAS_BP columns by comparing each average blood pressure with the threshold for high blood pressure (Systolic >= 130 mmHg; Diastolic >= 80 mmHg). I had to convert these columns to integers because the Logistic Regression function couldn't interpret Boolean values.</li>
 	<li>I created a CleanDF class that creates a cleaned dataframe containing all of the features listed above.</li>
-	<li>While NaN values are ignored by the plotting libraries that I used, I had to drop rows containing NaN values when creating my logistic regression models.</li>
+	<li>NaN values are ignored by both the plotting libraries and the libraries I used to create my logistic regression model, so I did not remove them.</li>
 </ul>
 
 # Part 1: Visualization
 <p>I first made a scatterplot of Average Systolic Blood Pressure vs Nicotine to quickly visualize my data.<p>
 
-* ADD INITIAL SCATTERPLOT
+<img src='img/bp_v_nicotine.png'>
 <p>The relationship between Blood Pressure and Nicotine does not appear to be linear, so a linear regression would not be appropriate for modeling this relationship.</p>
 <p>I also wanted to see how blood pressure varied between different demographics of people. Below are Box and Whisker plots showing the distribution of blood pressure readings for people of different marital statuses:</p>
 
-* ADD MARITAL STATUS BOX N WHISKER
+<img src='img/marital.png'>
 <p>...and another comparing blood pressure readings of people who served in the active duty military and those that didn't:</p>
 
-* ADD MILITARY BOX N WHISKER
+<img src='img/military.png'>
 <p>It is interesting to note that widowers seem to have a higher mean blood pressure than people of other marital statuses, while people living with a partner seem to have the lowest mean blood pressure. People who have served in the also seem to have higher mean blood pressure than people who haven't.</p>
 
 # Part 2: Creating a Model
@@ -66,28 +66,25 @@ Obviously, I couldn't include every column in my analysis, so I decided to focus
 ## <u>Assumptions of Inferential Logistic Regression:</u>
 <p>In order to perform an inferential logistic regression, my problem had to meet the following requirements:</p>
   
-  * Correct Distribution of Outcome: a binary regression requires the dependent variable to be binary
+  * <u>Correct Distribution of Outcome:</u> a binary regression requires the dependent variable to be binary
     * In my regression dependent variable is binary: a person either has high blood pressure (1) or doesn't (0) :white_check_mark:
-  * Independence: observations should be independent
+  * <u>Independence:</u> observations should be independent
     * All entries in my data are for unique people. :white_check_mark:
-  * No Multicollinearity: logistic regression requires there to be little to no multicollinearity among the independent variables
+  * <u>No Multicollinearity:</u> logistic regression requires there to be little to no multicollinearity among the independent variables
     * There is only one independent variable in my model: nicotine. :white_check_mark:
-  * Linearity of the Log Odds: independent variables must be linearly related to the log odds
-    * ADD LOG ODDS PLOT
+  * <u>Linearity of the Log Odds:</u> independent variables must be linearly related to the log odds
+    * <img src='img/log-odds.png'>
 	* The log odds are linear :white_check_mark: 
-  * Sample Size: at minimum, 10 cases with the least frequent outcome for each independent variable in your model
-    * (10 x 1 independent variable)/(0.30 probability of a person having high blood pressure) = 33 minimum samples; there are 5210 samples. :white_check_mark:
-<p>My model meets all of these assumptions, so I was able to proceed with my regression. To accomplish this, I created a new column in my data containing a "1" if the participant had high systolic blood pressure on average and a "0" if they did not (scatterplot below).</p>
+  * <u>Sample Size:</u> at minimum, 10 cases with the least frequent outcome for each independent variable in your model
+    * (10 x 1 independent variable)/(0.30 probability of a person having high blood pressure) = 33 minimum samples; there are 5210 non-NaN samples. :white_check_mark:
+<p>My model meets all of these assumptions, so I was able to proceed with my regression. To accomplish this, I created a new column in my data containing a "1" if the participant had high systolic blood pressure on average and a "0" if they did not I then created my logistic regression model.</p>
 
-* ADD SCATTERPLOT
-<p>I then created my logistic regression model</p>
-
-* add model plot
+* <img src='img/model.png'>
 
 # Part 3: Evaluating the Model
 <p>To see if nicotine had an effect on the odds of someone having high blood pressure, I looked at the summary for my model:</p>
 
-* ADD SUMMARY TABLE
+* <img src='img/model-summary.png'>
 
 <p>The p-value for nicotine is 0.000, meaning that nicotine metabolates have a statistically significant effect on the odds of someone having high blood pressure. Because the coefficient associated with nicotine is positive, the more nicotine someone has in their system, their chances of having high blood pressure increases.</p>
 <p>Though this is the case, the pseudo R-squared value for this model is 0.01057, meaning that nicotine alone cannot accurately determine the likelihood of high blood pressure.</p>
