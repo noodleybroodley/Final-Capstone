@@ -66,6 +66,17 @@ Obviously, I couldn't include every column in my analysis, so I decided to focus
 
 # Part 2: Creating a Model
 <p>As previously noted, the relationship between Blood Pressure and Nicotine cannot be represented linearly, so it would be more appropriate to view this as a binary classification problem: "What are the odds that a participant has high blood pressure, based on the amount of nicotine detected during their labs? I chose to create an inferential logistic regression!</p>
+
+## Assumptions of Inferential Logistic Regression:
+<p>In order to perform an inferential logistic regression, my problem had to meet the following requirements:</p>
+  
+  * Correct Distribution of Outcome: a binary regression requires the dependent variable to be binary
+    * In my regression dependent variable is binary: a person either has high blood pressure (1) or doesn't (0) :white_check_mark:
+  * Independence: observations should be independent
+  * No Multicollinearity: logistic regression requires there to be little to no multicollinearity among the independent variables
+  * Linearity of the Log Odds: independent variables must be linearly related to the log odds
+  * Sample Size: at minimum, 10 cases with the least frequent outcome for each independent variable in your model
+    * (10 x 1 independent variable)/(0.43 probability of a person having high blood pressure) = 23 minimum samples
 <p>To accomplish this, I created a new column in my data containing a "1" if the participant had high systolic blood pressure on average and a "0" if they did not (scatterplot below).</p>
 
 * ADD SCATTERPLOT
@@ -80,7 +91,10 @@ Obviously, I couldn't include every column in my analysis, so I decided to focus
 
 * add model plot with 0.15 threshold line
 * add roc curve
-<p>In my model, I want to minimize the false positive rate and maximize the true positive rate. In other words, I want my model to correctly categorize a person's blood pressure as much as possible. I used the area under the ROC curve to determine if my model is successful at this. On this plot, an area of 0.5 represents a 50% probability that a model will correctly categorize data, equivalent to random guessing or a coin-flip. The closer to an area of 1.0, the better the model.</p>
+<p>In my model, I want to minimize the false positive rate and maximize the true positive rate. In other words, I want my model to correctly categorize a person's blood pressure as much as possible. I used the area under the ROC curve to determine if my model is successful at this. On this plot, an area of 0.5 represents a 50% probability that a model will correctly categorize data, equivalent to random guessing or a coin-flip. The closer to an area of 1.0, the better the model. This initial model is only slightly better than random guessing so I tried improving it by changing the threshold a few times.</p>
+
+* add all threshold changes
+<p></p>
 
 
 
