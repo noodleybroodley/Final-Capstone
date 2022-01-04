@@ -1,32 +1,28 @@
 # Health Factors & High Blood Pressure
-<br></br>
-<img src="img/popcorn.gif">
-<br></br>
-# Background & Motivation
+
+## <strong> Background & Motivation </strong>
 Being an Army Officer, physical readiness is paramount; you have to keep your body in good shape to meet the requirements of the profession. Exercise plays a key role in maintaining physical fitness, but the things you consume are equally important. Nicotine use is widespread among officers, non-commissioned officers and soldiers alike and I am concerned about what negative impacts this might have on health. Because of this, I wanted to examine the effects of nicotine use on blood pressure.
 
-# Questions
-<ul>
-	<li>How does nicotine affect the likelihood that someone has high blood pressure?</li>
-	<li>What other health factors have an effect on this likelihood?</li>
-</ul>
+## <strong> Questions </strong>
 
-# Data
+* How does nicotine affect the likelihood that someone has high blood pressure?
+* What other health factors have an effect on this likelihood?
+
+## <strong> Data </strong>
 The data I used for this project comes from the <a href="https://www.kaggle.com/cdc/national-health-and-nutrition-examination-survey">2013-2014 National Health and Nutrition Examination Survey (NHANES)</a>, an annual survey conducted by the CDC. The survey contains information about participants from 15 different counties across the United States. The data combines medical questionnaire answers as well as medical examinations and labs. The data was broken up into 6 files:
-<ul>
-	<li>"demographic": 47 columns, 10176 rows</li>
-	<li>"diet": 168 columns, 9814 rows</li>
-	<li>"examination": 224 columns, 9814 rows</li>
-	<li>"labs": 424 columns, 9814 rows</li>
-	<li>"medications": 13 columns, 20195 rows</li>
-	<li>"questionnaire": 953 columns, 10176 rows</li>
-</ul>
-Obviously, I couldn't include every column in my analysis, so I decided to focus on participants' ages, blood pressure, marital status, and the amount of nicotine found during their labs. This resulted in the data below:
-<br></br>
-## Include screenshot
-<br></br>
 
-## <u>Summary of the Data:</u>
+* "demographic": 47 columns, 10176 rows
+* "diet": 168 columns, 9814 rows
+* "examination": 224 columns, 9814 rows
+* "labs": 424 columns, 9814 rows
+* "medications": 13 columns, 20195 rows
+* "questionnaire": 953 columns, 10176 rows
+
+Obviously, I couldn't include every column in my analysis, so I decided to focus on participants' ages, blood pressure, marital status, and the amount of nicotine found during their labs. This resulted in the data below:
+
+* SCREENSHOT OF DATA
+
+### <u>Summary of the Data:</u>
 10175 Rows, each containing the following information for unique patients:
 <ul>
 	<li>SEQN: the Participant's Unique Sequence Number</li>
@@ -41,7 +37,7 @@ Obviously, I couldn't include every column in my analysis, so I decided to focus
 
 </ul>
 
-## <u>Cleaning:</u>
+### <u>Cleaning:</u>
 <ul>
 	<li>I first selected the columns that I wanted to focus on and removed the rest.</li>
 	<li>Initially, all categorical column entries were recorded as integers representing participant responses. I found a website that had a legend that explained each number, then I replaced all the numbers with more readable text.</li>
@@ -67,34 +63,35 @@ Obviously, I couldn't include every column in my analysis, so I decided to focus
 # Part 2: Creating a Model
 <p>As previously noted, the relationship between Blood Pressure and Nicotine cannot be represented linearly, so it would be more appropriate to view this as a binary classification problem: "What are the odds that a participant has high blood pressure, based on the amount of nicotine detected during their labs? I chose to create an inferential logistic regression!</p>
 
-## Assumptions of Inferential Logistic Regression:
+## <u>Assumptions of Inferential Logistic Regression:</u>
 <p>In order to perform an inferential logistic regression, my problem had to meet the following requirements:</p>
   
   * Correct Distribution of Outcome: a binary regression requires the dependent variable to be binary
     * In my regression dependent variable is binary: a person either has high blood pressure (1) or doesn't (0) :white_check_mark:
   * Independence: observations should be independent
+    * All entries in my data are for unique people. :white_check_mark:
   * No Multicollinearity: logistic regression requires there to be little to no multicollinearity among the independent variables
+    * There is only one independent variable in my model: nicotine. :white_check_mark:
   * Linearity of the Log Odds: independent variables must be linearly related to the log odds
+    * ADD LOG ODDS PLOT
+	* The log odds are linear :white_check_mark: 
   * Sample Size: at minimum, 10 cases with the least frequent outcome for each independent variable in your model
-    * (10 x 1 independent variable)/(0.43 probability of a person having high blood pressure) = 23 minimum samples
-<p>To accomplish this, I created a new column in my data containing a "1" if the participant had high systolic blood pressure on average and a "0" if they did not (scatterplot below).</p>
+    * (10 x 1 independent variable)/(0.30 probability of a person having high blood pressure) = 33 minimum samples; there are 5210 samples. :white_check_mark:
+<p>My model meets all of these assumptions, so I was able to proceed with my regression. To accomplish this, I created a new column in my data containing a "1" if the participant had high systolic blood pressure on average and a "0" if they did not (scatterplot below).</p>
 
 * ADD SCATTERPLOT
-<p>I then created my initial logistic regression model</p>
+<p>I then created my logistic regression model</p>
 
 * add model plot
 
-# Part 3: Improving the Model
-<p>As you can see, our regression line doesn't exactly fit the data. In this case, it is necessary to choose a probability threshold for classifying a data point as having high blood pressure. I initially chose 0.15.</p>
+# Part 3: Evaluating the Model
+<p>To see if nicotine had an effect on the odds of someone having high blood pressure, I looked at the summary for my model:</p>
 
-<p>evaluated its performance using a Receiver Operating Characteristic (ROC) curve:</p>
+* ADD SUMMARY TABLE
 
-* add model plot with 0.15 threshold line
-* add roc curve
-<p>In my model, I want to minimize the false positive rate and maximize the true positive rate. In other words, I want my model to correctly categorize a person's blood pressure as much as possible. I used the area under the ROC curve to determine if my model is successful at this. On this plot, an area of 0.5 represents a 50% probability that a model will correctly categorize data, equivalent to random guessing or a coin-flip. The closer to an area of 1.0, the better the model. This initial model is only slightly better than random guessing so I tried improving it by changing the threshold a few times.</p>
+<p>The p-value for nicotine is 0.000, meaning that nicotine metabolates have a statistically significant effect on the odds of someone having high blood pressure. Because the coefficient associated with nicotine is positive, the more nicotine someone has in their system, their chances of having high blood pressure increases.</p>
+<p>Though this is the case, the pseudo R-squared value for this model is 0.01057, meaning that nicotine alone cannot accurately determine the likelihood of high blood pressure.</p>
 
-* add all threshold changes
-<p></p>
 
 
 
@@ -102,11 +99,6 @@ Obviously, I couldn't include every column in my analysis, so I decided to focus
 
 
 ## <u>Future Research:</u>
-<ul>
-<li></li>
-</ul>
+
 
 # Works Cited
-<ol>
-<li>https://www.boxofficemojo.com/chart/top_opening_weekend/</li>
-</ol>
