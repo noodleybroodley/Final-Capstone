@@ -10,11 +10,19 @@ class CleanDF(object):
 
 class DemographicDF(CleanDF):
 	def __init__(self):
-		self.df = pd.read_csv('../data/demographic.csv')[['SEQN','RIDAGEYR',
-															'DMQMILIZ','DMDMARTL']]
+		self.df = pd.read_csv('../data/demographic.csv')[['SEQN','RIDAGEYR','DMQMILIZ','DMDMARTL','RIAGENDR','RIDRETH3']]
 		self.column_dict = {
 			'DMQMILIZ': {1.0: 'Yes',2.0: 'No',7.0: np.nan,9.0: np.nan,'.': np.nan},
-			'DMDMARTL': {1.0: 'Married',2.0: 'Widowed',3.0: 'Divorced',4.0: 'Separated',5.0: 'Never married',6.0: 'Living w/ partner',77.0: np.nan,99.0: np.nan,'.': np.nan}
+			'DMDMARTL': {1.0: 'Married',2.0: 'Widowed',3.0: 'Divorced',4.0: 'Separated',5.0: 'Never married',6.0: 'Living w/ partner',77.0: np.nan,99.0: np.nan,'.': np.nan},
+			'RIAGENDR': {1.0: 'Male', 2.0: 'Female', '.': np.nan},
+			'RIDRETH3': {1.0: 'Mexican American',
+						 2.0: 'Other Hispanic',
+						 3.0: 'White',
+						 4.0: 'Black',
+						 6.0: 'Asian',
+						 7.0: 'Other Race (or Multi-Racial)',
+						 '.': np.nan
+						},
 		}
 		self.clean_data()
 
@@ -46,7 +54,7 @@ class ExamDF(CleanDF):
 class LabsDF(CleanDF):
 	def __init__(self):
 		super(LabsDF,self).__init__()
-		self.df = pd.read_csv('../data/labs.csv')[['SEQN','LBXHCT']]
+		self.df = pd.read_csv('../data/labs.csv')[['SEQN','LBXHCT','LBXTR']]
 	
 if __name__ == '__main__':
 	demo_df = DemographicDF()
